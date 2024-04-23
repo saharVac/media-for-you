@@ -1,28 +1,43 @@
-# Author: Sahar and Samradnyee
+# Author: Samradnyee
 # Date created: 4/23/24
 # Description: Show class, that is a subclass of Media
 from Media import Media
 
 class Show(Media):
-# Member variables to store the type of show, directors, actors, a country code, the date the
+    # Member variables to store the type of show, directors, actors, a country code, the date the
     # show was added, the year the show was released, the rating, the duration, genres, and a
     # description
     __type = ""
     __directors = []
-    __actors=[]
-    __country_code=""
-    __add_date=""
-    __release_year=""
-    __rating=0
-    __duration=0
-    __genres=[]
-    __description=""
+    __actors = []
+    __country_code = ""
+    __add_date = ""
+    __release_year = ""
+    __rating = 0
+    __duration = 0
+    __genres = []
+    __description = ""
 
     # constructor that takes in an ID, a title, an average rating, the type of show,
     # directors, actors, a country code, the date the show was added, the year the show was
     # released, the rating, the duration, genres, and a description as parameters and assigns those
     # values to the appropriate member variables
     def __init__(self, id, title, avg_rating, type, directors, actors, country_code, add_date, release_year, rating, duration, genres, description):
+        """
+        :param id:
+        :param title:
+        :param avg_rating:
+        :param type:
+        :param directors:
+        :param actors:
+        :param country_code:
+        :param add_date:
+        :param release_year:
+        :param rating:
+        :param duration:
+        :param genres:
+        :param description:
+        """
 
         Media.__init__(id, title, avg_rating)
 
@@ -36,8 +51,6 @@ class Show(Media):
         self.__duration = duration
         self.__genres = genres
         self.__description = description
-
-
 
     # accessor/mutator functions
 

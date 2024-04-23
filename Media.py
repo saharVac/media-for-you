@@ -1,4 +1,4 @@
-# Author: Sahar and Samradnyee
+# Author: Sahar
 # Date created: 4/23/24
 # Description: Media class
 
@@ -9,8 +9,14 @@ class Media:
     _title = ""
     _avgRating = 0
 
-    # constructor that takes in an ID, a title, and an average rating as parameters and assigns those values to the appropriate member variables
+    # constructor that takes in an ID, a title, and an average rating as parameters and assigns those values to the
+    # appropriate member variables
     def __init__(self, id, title, avgRating):
+        """
+        :param id:
+        :param title:
+        :param avgRating:
+        """
         self._id = id
         self._title = title
         self._avgRating = avgRating
