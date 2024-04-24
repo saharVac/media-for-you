@@ -400,17 +400,17 @@ class Recommender:
 #####################
 # TESTING:
 #####################
-def main():
-    recommender = Recommender()
-    recommender.loadBooks()
-    recommender.loadShows()
-    recommender.loadAssociations()
-    # print(recommender.getMovieList())
-    # print(recommender.getTVList())
-    # print(recommender.getBookList())
-    print(recommender.getBookStats())
-
-main()
+# def main():
+#     recommender = Recommender()
+#     recommender.loadBooks()
+#     recommender.loadShows()
+#     recommender.loadAssociations()
+#     # print(recommender.getMovieList())
+#     # print(recommender.getTVList())
+#     # print(recommender.getBookList())
+#     print(recommender.getBookStats())
+#
+# main()
 
 ####################
 #End Testing
