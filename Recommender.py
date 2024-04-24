@@ -23,12 +23,12 @@ class Recommender:
     # function named loadBooks(), that takes in no additional parameters, returns nothing, loads all of the data from a book file, and which should at least:
     def loadBooks(self):
         # Prompts the user for the name of the file using an appropriate filedialog, and if the user does not choose an existing file, it should repeatedly prompt the user for a file in the same way
-        booksFile = filedialog.askopenfilename(title="Provide with books file name")
+        booksFile = filedialog.askopenfilename(title="Provide with books file name", initialdir=os.getcwd())
         while True:
             if os.path.exists(booksFile):
                 break
             else:
-                booksFile = filedialog.askopenfilename(title="File does not exist, please provide with books file name")
+                booksFile = filedialog.askopenfilename(title="File does not exist, please provide with books file name", initialdir=os.getcwd())
         # Opens and reads the file one entry at a time
         with open(booksFile, "r") as file:
             lines = file.readlines()
@@ -36,8 +36,9 @@ class Recommender:
             for line in lines[1:]:
                 line = line.strip()
                 lineList = line.split(",")
-                bookID, title, authors, average_rating, isbn, isbn13, language_code, num_pages, ratings_count, publication_date, publisher = lineList[0], lineList[1], lineList[2].split("\\"), lineList[3], lineList[4], lineList[5], lineList[6], lineList[7], lineList[8], lineList[9], lineList[10]
+                bookID, title, authors, average_rating, isbn, isbn13, language_code, num_pages, ratings_count, publication_date, publisher = lineList[0], lineList[1], lineList[2], lineList[3], lineList[4], lineList[5], lineList[6], lineList[7], lineList[8], lineList[9], lineList[10]
                 # Stores the entry for each book in a Book object
+
                 book = Book(bookID, title, average_rating, authors, isbn, isbn13, language_code, num_pages, ratings_count, publication_date, publisher)
                 # Stores each Book object in the appropriate dictionary using the book’s ID as the key and the Book object as the value
                 self._books[bookID] = book
@@ -46,12 +47,12 @@ class Recommender:
     # A function named loadShows(), that takes in no additional parameters, returns nothing, loads all of the data from a show file, and which should at least:
     def loadShows(self):
         # Prompts the user for the name of the file using an appropriate filedialog, and if the user does not choose an existing file, it should repeatedly prompt the user for a file in the same way
-        showsFile = filedialog.askopenfilename(title="Provide with shows file name")
+        showsFile = filedialog.askopenfilename(title="Provide with shows file name", initialdir=os.getcwd())
         while True:
             if os.path.exists(showsFile):
                 break
             else:
-                showsFile = filedialog.askopenfilename(title="File does not exist, please provide with shows file name")
+                showsFile = filedialog.askopenfilename(title="File does not exist, please provide with shows file name", initialdir=os.getcwd())
         # Opens and reads the file one entry at a time
         with open(showsFile, "r") as file:
             lines = file.readlines()
@@ -59,7 +60,7 @@ class Recommender:
             for line in lines[1:]:
                 line = line.strip()
                 lineList = line.split(",")
-                show_id, type, title, director, cast, average_rating, country, date_added, release_year, rating, duration, listed_in, description = lineList[0], lineList[1], lineList[2], lineList[3], lineList[4].split("\\"), lineList[5], lineList[6], lineList[7], lineList[8], lineList[9], lineList[10], lineList[11].split("\\"), lineList[12]
+                show_id, type, title, director, cast, average_rating, country, date_added, release_year, rating, duration, listed_in, description = lineList[0], lineList[1], lineList[2], lineList[3], lineList[4], lineList[5], lineList[6], lineList[7], lineList[8], lineList[9], lineList[10], lineList[11], lineList[12]
                 # Stores the entry for each show in a Show object
                 show = Show(show_id, title, average_rating, type, director, cast, country, date_added, release_year, rating, duration, listed_in, description)
                 # Stores each Show object in the appropriate dictionary using the show’s ID as the key and the Show object as the value
@@ -69,12 +70,12 @@ class Recommender:
     # A function named loadAssociations(), that takes in no additional parameters, returns nothing, loads all of the data from an association file:
     def loadAssociations(self):
         # Prompts the user for the name of the file using an appropriate filedialog, and if the user does not choose an existing file, it should repeatedly prompt the user for a file in the same way
-        associationFile = filedialog.askopenfilename(title="Provide with association file name")
+        associationFile = filedialog.askopenfilename(title="Provide with association file name", initialdir=os.getcwd())
         while True:
             if os.path.exists(associationFile):
                 break
             else:
-                associationFile = filedialog.askopenfilename(title="File does not exist, please provide with association file name")
+                associationFile = filedialog.askopenfilename(title="File does not exist, please provide with association file name", initialdir=os.getcwd())
         # Opens and reads the file one entry at a time
         with open(associationFile, "r") as file:
             lines = file.readlines()
@@ -117,7 +118,7 @@ class Recommender:
         titles = []
         maxTitleLength = 0
         durations = []
-        for show in self._shows:
+        for id, show in self._shows.items():
             if show.getType() == "Movie":
                 title = show.getTitle()
                 duration = show.getDuration()
@@ -133,31 +134,251 @@ class Recommender:
         return data
 
     # A function named getTVList(), that takes in no additional parameters, and returns the Title and Number of Seasons for all of the stored tv shows, such that:
-        # The data has the header Title and Seasions
-        # All of the data is in neat, even columns, whose width is determined based on the length of the entries in the data
+    def getTVList(self):
+        titles = []
+        maxTitleLength = 0
+        durations = []
+        for id, show in self._shows.items():
+            if show.getType() == "TV Show":
+                title = show.getTitle()
+                duration = show.getDuration()
+                titles.append(title)
+                durations.append(duration)
+                if len(title) > maxTitleLength:
+                    maxTitleLength = len(title)
+        # The data has the header Title and Seasons
+        data = f"{'Title':<{maxTitleLength}}  Seasons"
+        for index, title in enumerate(titles):
+            # All of the data is in neat, even columns, whose width is determined based on the length of the entries in the data
+            data += f"\n{title:<{maxTitleLength}}  {durations[index]}"
+        return data
 
     # A function named getBookList(), that takes in no additional parameters, and returns the Title and Author(s) for all of the stored movies, such that:
+    def getBookList(self):
+        titles = []
+        maxTitleLength = 0
+        authors = []
+        for id, book in self._books.items():
+            title = book.getTitle()
+            author = book.getAuthors()
+            titles.append(title)
+            authors.append(author)
+            if len(title) > maxTitleLength:
+                maxTitleLength = len(title)
         # The data has the header Title and Author(s)
-        # All of the data is in neat, even columns, whose width is determined based on the length of the entries in the data
+        data = f"{'Title':<{maxTitleLength}}  Author(s)"
+        for index, title in enumerate(titles):
+            # All of the data is in neat, even columns, whose width is determined based on the length of the entries in the data
+            data += f"\n{title:<{maxTitleLength}}  {authors[index]}"
+        return data
+
 
     # A function named getMovieStats(), that takes in no additional parameters, and returns the statistics regarding movies, such as:
+    def getMovieStats(self):
+        totalDurations = 0
+        totalMovies = 0
+
+        ratingToMovieAmounts = {}
+
+        directorsToMovieAmounts = {}
+        directorWithMostMovies = ""
+
+        actorsToMovieAmounts = {}
+        actorInMostMovies = ""
+
+        genreCounts = {}
+        genreWithMostMovies = ""
+
+        for id, show in self._shows.items():
+            if show.getType() == "Movie":
+
+                # incrementing duration total toward average to calculate once iteration done
+                duration = int(show.getDuration().split(" ")[0])
+                totalDurations += duration
+                totalMovies += 1
+
+                directors = show.getDirectors().split("\\")
+                for director in directors:
+                    if director not in directorsToMovieAmounts:
+                        # if directorsToMovieAmounts is empty, this first director found should be declared as one with most movies for now
+                        if not directorsToMovieAmounts:
+                            directorWithMostMovies = director
+                        directorsToMovieAmounts[director] = 1
+                    else:
+                        directorsToMovieAmounts[director] += 1
+                        # check if director now has highest amount
+                        if directorsToMovieAmounts[director] > directorsToMovieAmounts[directorWithMostMovies]:
+                            directorWithMostMovies = director
+
+                actors = show.getActors().split("\\")
+                for actor in actors:
+                    if actor not in actorsToMovieAmounts:
+                        # if actorsToMovieAmounts is empty, this first actor found should be declared as one with most movies for now
+                        if not actorsToMovieAmounts:
+                            actorInMostMovies = actor
+                        actorsToMovieAmounts[actor] = 1
+                    else:
+                        actorsToMovieAmounts[actor] += 1
+                        if actorsToMovieAmounts[actor] > actorsToMovieAmounts[actorInMostMovies]:
+                            actorInMostMovies = actor
+
+                genres = show.getGenres().split("\\")
+                for genre in genres:
+                    if genre not in genreCounts:
+                        # if genreCounts is empty, this first genre found should be declared as one in most movies for now
+                        if not genreCounts:
+                            genreWithMostMovies = genre
+                        genreCounts[genre] = 1
+                    else:
+                        genreCounts[genre] += 1
+                        # check if genre now has highest amount
+                        if genreCounts[genre] > genreCounts[genreWithMostMovies]:
+                            genreWithMostMovies = genre
+
+                rating = show.getRating()
+                if rating not in ratingToMovieAmounts:
+                    ratingToMovieAmounts[rating] = 1
+                else:
+                    ratingToMovieAmounts[rating] += 1
+
         # Rating for movies (G, PG, R, etc...) and the number of times a particular rating appears as a percentage of all of the ratings for movies, with two decimals of precision
+        stats = "Ratings:"
+        for rating, amount in ratingToMovieAmounts.items():
+            stats += f"\n{rating} {amount / totalMovies:.2%}"
+
         # Average movie duration in minutes, with two decimals of precision
+        avgDuration = totalDurations / totalMovies
+        stats += f"\n\nAverage Movie Duration: {avgDuration:.2%} minutes"
+
         # The director who has directed the most movies
+        stats += f"\n\nMpst Prolific Director: {directorWithMostMovies}"
+
         # The actor who has acted in the most movies
+        stats += f"\n\nMost Prolific Actor: {actorInMostMovies}"
+
         # The most frequent movie genre
+        stats += f"\n\nMost Frequent Genre: {genreWithMostMovies}"
+
+        return stats
 
     # A function named getTVStats(), that takes in no additional parameters, and returns the statistics regarding tv shows, such as:
+    def getTVStats(self):
+        totalSeasons = 0
+        totalShows = 0
+
+        ratingToShowAmounts = {}
+
+        actorsToShowAmounts = {}
+        actorInMostShows = ""
+
+        genreCounts = {}
+        genreWithMostShows = ""
+
+        for id, show in self._shows.items():
+            if show.getType() == "TV Show":
+                seasons = int(show.getDuration().split(" ")[0])
+                totalSeasons += seasons
+                totalShows += 1
+
+                actors = show.getActors().split("\\")
+                for actor in actors:
+                    if actor:
+                        if actor not in actorsToShowAmounts:
+                            # if actorsToShowAmounts is empty, this first actor found should be declared as one with most shows for now
+                            if not actorsToShowAmounts:
+                                actorInMostShows = actor
+                            actorsToShowAmounts[actor] = 1
+                        else:
+                            actorsToShowAmounts[actor] += 1
+                            if actorsToShowAmounts[actor] > actorsToShowAmounts[actorInMostShows]:
+                                actorInMostShows = actor
+
+                genres = show.getGenres().split("\\")
+                for genre in genres:
+                    if genre not in genreCounts:
+                        # if genreCounts is empty, this first genre found should be declared as one in most shows for now
+                        if not genreCounts:
+                            genreWithMostShows = genre
+                        genreCounts[genre] = 1
+                    else:
+                        genreCounts[genre] += 1
+                        # check if genre now has highest amount
+                        if genreCounts[genre] > genreCounts[genreWithMostShows]:
+                            genreWithMostShows = genre
+
+                rating = show.getRating()
+                if rating not in ratingToShowAmounts:
+                    ratingToShowAmounts[rating] = 1
+                else:
+                    ratingToShowAmounts[rating] += 1
+
         # Rating for tv shows (G, PG, R, etc...) and the number of times a particular rating appears as a percentage of all of the ratings for tv shows, with two decimals of precision
-        # Average number of seasons for tv shows, with two decimals of precision The actor who has acted in the most tv shows
+        stats = "Ratings:"
+        for rating, amount in ratingToShowAmounts.items():
+            stats += f"\n{rating} {amount / totalShows:.2%}"
+
+        # Average number of seasons for tv shows, with two decimals of precision
+        avgSeasons = totalSeasons / totalShows
+        stats += f"\n\nAverage Number of Seasons: {avgSeasons:.2f} seasons"
+
+        # The actor who has acted in the most tv shows
+        stats += f"\n\nMost Prolific Actor: {actorInMostShows}"
+
         # The most frequent tv show genre
+        stats += f"\n\nMost Frequent Genre: {genreWithMostShows}"
+
+        return stats
 
     # A function named getBookStats(), that takes in no additional parameters, and returns the statistics regarding books, such as:
+    def getBookStats(self):
+        totalPages = 0
+
+        authorToBookAmounts = {}
+        authorInMostBooks = ""
+
+        publisherToBookAmounts = {}
+        publisherInMostBooks = ""
+
+        for id, book in self._books.items():
+            totalPages += int(book.getPages())
+
+            publisher = book.getPublisher()
+            if publisher not in publisherToBookAmounts:
+                # if publisherToBookAmounts is empty, this first publisher found should be declared as one in most books for now
+                if not publisherToBookAmounts:
+                    publisherInMostBooks = publisher
+                publisherToBookAmounts[publisher] = 1
+            else:
+                publisherToBookAmounts[publisher] += 1
+                if publisherToBookAmounts[publisher] > publisherToBookAmounts[publisherInMostBooks]:
+                    publisherInMostBooks = publisher
+
+            authors = book.getAuthors().split("\\")
+            for author in authors:
+                if author not in authorToBookAmounts:
+                    # if authorToBookAmounts is empty, this first author found should be declared as one in most books for now
+                    if not authorToBookAmounts:
+                        authorInMostBooks = author
+                    authorToBookAmounts[author] = 1
+                else:
+                    authorToBookAmounts[author] += 1
+                    if authorToBookAmounts[author] > authorToBookAmounts[authorInMostBooks]:
+                        authorInMostBooks = author
+
         # The average page count, with two decimals of precision
+        avgPages = totalPages / len(self._books)
+        stats = f"Average Page Count: {avgPages:.2f} pages"
+
         # The author who has written the most books
+        stats += f"\n\nMost Prolific Author: {authorInMostBooks}"
+
         # The publisher who has published the most books
+        stats += f"\n\nMost Prolific Publisher: {publisherInMostBooks}"
+
+        return stats
 
     # A function named searchTVMovies(), that takes in strings representing a movie or tv show, a title, a director, an actor, and a genre, and returns information regarding Movies or TV Shows such that:
+    # def searchTVMovies(self, title):
         # If the string representing the movie or tv show is neither Movie nor TV Show, spawn a showerror messagebox and inform the user the need to select Movie or TV Show from Type first, and return the string No Results
         # If the strings representing title, director, actor, and genre are all empty, spawn a showerror messagebox and inform the user the need to enter information for the Title, Directory, Actor and/or Genre first, and return the string No Results
         # Otherwise, search through the dictionary of shows and select all objects that adhere to the user’s data
@@ -175,3 +396,22 @@ class Recommender:
         # If the type is Book, search through the books dictionary and determine the id associated with that title
             # If the title is not in the dictionary, spawn a showwarning messagebox informing the user that there are no recommendations for that title, and return No results
             # Otherwise, using that book id, determine all of the movies and tv shows associated with that id in the association dictionary, and return a string containing all of the information for each movie or tv show with appropriate titles for each piece of information
+
+#####################
+# TESTING:
+#####################
+def main():
+    recommender = Recommender()
+    recommender.loadBooks()
+    recommender.loadShows()
+    recommender.loadAssociations()
+    # print(recommender.getMovieList())
+    # print(recommender.getTVList())
+    # print(recommender.getBookList())
+    print(recommender.getBookStats())
+
+main()
+
+####################
+#End Testing
+####################

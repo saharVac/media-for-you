@@ -35,7 +35,7 @@ class Book(Media):
         :param publisher:
         """
 
-        Media.__init__(id, title, avg_rating)
+        Media.__init__(self, id, title, avg_rating)
 
         self._authors = authors
         self._isbn_num = isbn_num

@@ -39,7 +39,7 @@ class Show(Media):
         :param description:
         """
 
-        Media.__init__(id, title, avg_rating)
+        Media.__init__(self, id, title, avg_rating)
 
         self.__type = type
         self.__directors = directors
