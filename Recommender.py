@@ -455,28 +455,84 @@ class Recommender:
         return data
 
     # A function named getRecommendations(), that takes in strings representing a type and a title, and returns a string containing recommendations regarding Movies, TV Shows, or Books such that:
+    def getRecommendations(self, type, title):
         # If the type is Movie or TV Show, search through the shows dictionary and determine the id associated with that title
+        if type in ["Movie", "TV Show"]:
+            idFound = ""
+            for id, show in self._shows.items():
+                if show.getTitle() == title:
+                    idFound = id
             # If the title is not in the dictionary, spawn a showwarning messagebox informing the user that there are no recommendations for that title, and return No results
+            if idFound == "":
+                messagebox.showwarning("Warning", f"there are no recommendations for title {title}")
+                return "No results"
             # Otherwise, using that movie or tv show id, determine all of the books associated with that id in the association dictionary, and return a string containing all of the information for each book with appropriate titles for each piece of information
+            else:
+                results = ""
+                for key in self._associations[idFound].keys():
+                    book = self._books[key]
+                    results += f"""\rTitle: {book.getTitle()}
+                    \rAuthor: {book.getAuthors()}
+                    \rAverage Rating: {book.getAvgRating()}
+                    \rISBN: {book.getIsbnNum()}
+                    \rISBN13: {book.getIsbn13Num()}
+                    \rLanguage Code: {book.getLangCode()}
+                    \rPages: {book.getPages()}
+                    \rRating Count: {book.getRatings()}
+                    \rPublication Date: {book.getPublicationDate()}
+                    \rPublisher: {book.getPublisher()}
+                    
+                    \r**************************************************
+                    
+                    """
+                return results
         # If the type is Book, search through the books dictionary and determine the id associated with that title
+        elif type == "Book":
+            idFound = ""
+            for id, book in self._books.items():
+                if book.getTitle() == title:
+                    idFound = id
             # If the title is not in the dictionary, spawn a showwarning messagebox informing the user that there are no recommendations for that title, and return No results
+            if idFound == "":
+                messagebox.showwarning("Warning", f"there are no recommendations for title {title}")
+                return "No results"
             # Otherwise, using that book id, determine all of the movies and tv shows associated with that id in the association dictionary, and return a string containing all of the information for each movie or tv show with appropriate titles for each piece of information
+            else:
+                results = ""
+                for key in self._associations[idFound].keys():
+                    show = self._shows[key]
+                    results += f"""\rTitle: {show.getTitle()}
+                    \rAverage Rating: {show.getAvgRating()}
+                    \rShow Type: {show.getType()}
+                    \rDirectors: {show.getDirectors()}
+                    \rActors: {show.getActors()}
+                    \rCountry Code: {show.getCountryCode()}
+                    \rDate Added: {show.getAddDate()}
+                    \rRelease Year: {show.getReleaseYear()}
+                    \rRating: {show.getRating()}
+                    \rDuration: {show.getDuration()}
+                    \rGenres: {show.getGenres()}
+                    \rDescription: {show.getDescription()}
 
+                    \r**************************************************
+
+                    """
+                return results
 #####################
 # TESTING:
 #####################
-def main():
-    recommender = Recommender()
-    recommender.loadBooks()
-    recommender.loadShows()
-    recommender.loadAssociations()
-    # print(recommender.getMovieList())
-    # print(recommender.getTVList())
-    # print(recommender.getBookList())
-    # print(recommender.getBookStats())
-    print(recommender.searchBooks("", "", "Vintage"))
-
-main()
+# def main():
+#     recommender = Recommender()
+#     recommender.loadBooks()
+#     recommender.loadShows()
+#     recommender.loadAssociations()
+#     # print(recommender.getMovieList())
+#     # print(recommender.getTVList())
+#     # print(recommender.getBookList())
+#     # print(recommender.getBookStats())
+#     print(recommender.getRecommendations("Book", "Back to Wando Passo"))
+#
+# main()
 
 ####################
 #End Testing
