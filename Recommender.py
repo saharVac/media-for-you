@@ -421,9 +421,38 @@ class Recommender:
         return data
 
     # A function named searchBooks(), that takes in strings representing a title, an author, and a publisher, and returns information regarding books such that:
+    def searchBooks(self, title, author, publisher):
         # If the strings representing title, author, and publisher are all empty, spawn a showerror messagebox and inform the user the need to enter information for the Title, Author, and/or Publisher first, and return the string No Results
+        if not title and not author and not publisher:
+            messagebox.showerror("Error", "Please enter information for the Title, Author, and/or Publisher first")
+            return "No Results"
         # Otherwise, search through the dictionary of books and select all objects that adhere to the user’s data
+        results = []
+
+        longestTitleLen = 0
+        longestPublisherLen = 0
+        longestAuthorLen = 0
+
+        for id, book in self._books.items():
+            # field by field, considering only non-empty fields, skipping books that don't match the non-empty fields
+            if (title and title != book.getTitle()) or (publisher and publisher != book.getPublisher()) or (author and author not in book.getAuthors().split("\\")):
+                continue
+
+            if len(book.getTitle()) > longestTitleLen:
+                longestTitleLen = len(book.getTitle())
+            if len(book.getPublisher()) > longestPublisherLen:
+                longestPublisherLen = len(book.getPublisher())
+            if len(book.getAuthors()) > longestAuthorLen:
+                longestAuthorLen = len(book.getAuthors())
+
+            results.append(book)
+
         # Return a string containing the Title, Author, and Publisher (with those titles at the top) in neat, even columns, whose width is determined based on the length of the entries in the data
+        data = f"{'Title':<{longestTitleLen}}  {'Author':<{longestAuthorLen}}  {'Publisher':<{longestPublisherLen}}"
+        for book in results:
+            data += f"\n{book.getTitle():<{longestTitleLen}}  {book.getAuthors():<{longestAuthorLen}}  {book.getPublisher():<{longestPublisherLen}}"
+
+        return data
 
     # A function named getRecommendations(), that takes in strings representing a type and a title, and returns a string containing recommendations regarding Movies, TV Shows, or Books such that:
         # If the type is Movie or TV Show, search through the shows dictionary and determine the id associated with that title
@@ -444,7 +473,8 @@ def main():
     # print(recommender.getMovieList())
     # print(recommender.getTVList())
     # print(recommender.getBookList())
-    print(recommender.searchTVMovies("Movie", "", "", "", "Comedy"))
+    # print(recommender.getBookStats())
+    print(recommender.searchBooks("", "", "Vintage"))
 
 main()
 
