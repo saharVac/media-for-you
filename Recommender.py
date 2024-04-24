@@ -3,6 +3,7 @@
 # Description: Recommender class
 import os
 from tkinter import filedialog
+from tkinter import messagebox
 from Book import Book
 from Show import Show
 
@@ -378,11 +379,46 @@ class Recommender:
         return stats
 
     # A function named searchTVMovies(), that takes in strings representing a movie or tv show, a title, a director, an actor, and a genre, and returns information regarding Movies or TV Shows such that:
-    # def searchTVMovies(self, title):
+    def searchTVMovies(self, type, title, director, actor, genre):
         # If the string representing the movie or tv show is neither Movie nor TV Show, spawn a showerror messagebox and inform the user the need to select Movie or TV Show from Type first, and return the string No Results
+        if type not in ["Movie", "TV Show"]:
+            messagebox.showerror("Error", "Please select Movie or TV Show from Type first")
+            return "No Results"
         # If the strings representing title, director, actor, and genre are all empty, spawn a showerror messagebox and inform the user the need to enter information for the Title, Directory, Actor and/or Genre first, and return the string No Results
+        elif not title and not director and not actor and not genre:
+            messagebox.showerror("Error", "Please enter information for the Title, Directory, Actor and/or Genre first")
+            return "No Results"
+
         # Otherwise, search through the dictionary of shows and select all objects that adhere to the user’s data
+        results = []
+
+        longestTitleLen = 0
+        longestDirectorLen = 0
+        longestActorLen = 0
+        longestGenreLen = 0
+
+        for id, show in self._shows.items():
+            # since type must be selected, considering only matching types
+            if type == show.getType():
+                # field by field, considering only non-empty fields, skipping shows that don't match the non-empty fields
+                if (title and title != show.getTitle()) or (director and director not in show.getDirectors().split("\\")) or (actor and actor not in show.getActors().split("\\")) or (genre and genre not in show.getGenres().split("\\")):
+                    continue
+                if len(show.getTitle()) > longestTitleLen:
+                    longestTitleLen = len(show.getTitle())
+                if len(show.getDirectors()) > longestDirectorLen:
+                    longestDirectorLen = len(show.getDirectors())
+                if len(show.getActors()) > longestActorLen:
+                    longestActorLen = len(show.getActors())
+                if len(show.getGenres()) > longestGenreLen:
+                    longestGenreLen = len(show.getGenres())
+                results.append(show)
+
         # Return a string containing the Title, Director, Actors, and Genre (with those titles at the top) in neat, even columns, whose width is determined based on the length of the entries in the data
+        data = f"{'Title':<{longestTitleLen}}  {'Director':<{longestDirectorLen}}  {'Actor':<{longestActorLen}}  {'Genre':<{longestGenreLen}}"
+        for show in results:
+            data += f"\n{show.getTitle():<{longestTitleLen}}  {show.getDirectors():<{longestDirectorLen}}  {show.getActors():<{longestActorLen}}  {show.getGenres():<{longestGenreLen}}"
+
+        return data
 
     # A function named searchBooks(), that takes in strings representing a title, an author, and a publisher, and returns information regarding books such that:
         # If the strings representing title, author, and publisher are all empty, spawn a showerror messagebox and inform the user the need to enter information for the Title, Author, and/or Publisher first, and return the string No Results
@@ -400,17 +436,17 @@ class Recommender:
 #####################
 # TESTING:
 #####################
-# def main():
-#     recommender = Recommender()
-#     recommender.loadBooks()
-#     recommender.loadShows()
-#     recommender.loadAssociations()
-#     # print(recommender.getMovieList())
-#     # print(recommender.getTVList())
-#     # print(recommender.getBookList())
-#     print(recommender.getBookStats())
-#
-# main()
+def main():
+    recommender = Recommender()
+    recommender.loadBooks()
+    recommender.loadShows()
+    recommender.loadAssociations()
+    # print(recommender.getMovieList())
+    # print(recommender.getTVList())
+    # print(recommender.getBookList())
+    print(recommender.searchTVMovies("Movie", "", "", "", "Comedy"))
+
+main()
 
 ####################
 #End Testing
