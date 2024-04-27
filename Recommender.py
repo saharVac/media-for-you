@@ -522,18 +522,18 @@ class Recommender:
 #####################
 # TESTING:
 #####################
-def main():
-    recommender = Recommender()
-    recommender.loadBooks()
-    recommender.loadShows()
-    recommender.loadAssociations()
-    # print(recommender.getMovieList())
-    # print(recommender.getTVList())
-    # print(recommender.getBookList())
-    print(recommender.searchTVMovies("TV Show", "Swamp People", "", "", ""))
-    # print(recommender.getRecommendations("Book", "Back to Wando Passo"))
-
-main()
+# def main():
+#     recommender = Recommender()
+#     recommender.loadBooks()
+#     recommender.loadShows()
+#     recommender.loadAssociations()
+#     # print(recommender.getMovieList())
+#     # print(recommender.getTVList())
+#     # print(recommender.getBookList())
+#     print(recommender.searchTVMovies("TV Show", "Swamp People", "", "", ""))
+#     # print(recommender.getRecommendations("Book", "Back to Wando Passo"))
+#
+# main()
 
 ####################
 #End Testing
