@@ -213,15 +213,16 @@ class Recommender:
 
                 actors = show.getActors().split("\\")
                 for actor in actors:
-                    if actor not in actorsToMovieAmounts:
-                        # if actorsToMovieAmounts is empty, this first actor found should be declared as one with most movies for now
-                        if not actorsToMovieAmounts:
-                            actorInMostMovies = actor
-                        actorsToMovieAmounts[actor] = 1
-                    else:
-                        actorsToMovieAmounts[actor] += 1
-                        if actorsToMovieAmounts[actor] > actorsToMovieAmounts[actorInMostMovies]:
-                            actorInMostMovies = actor
+                    if actor:
+                        if actor not in actorsToMovieAmounts:
+                            # if actorsToMovieAmounts is empty, this first actor found should be declared as one with most movies for now
+                            if not actorsToMovieAmounts:
+                                actorInMostMovies = actor
+                            actorsToMovieAmounts[actor] = 1
+                        else:
+                            actorsToMovieAmounts[actor] += 1
+                            if actorsToMovieAmounts[actor] > actorsToMovieAmounts[actorInMostMovies]:
+                                actorInMostMovies = actor
 
                 genres = show.getGenres().split("\\")
                 for genre in genres:
