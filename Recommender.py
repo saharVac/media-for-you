@@ -249,7 +249,7 @@ class Recommender:
 
         # Average movie duration in minutes, with two decimals of precision
         avgDuration = totalDurations / totalMovies
-        stats += f"\n\nAverage Movie Duration: {avgDuration:.2%} minutes"
+        stats += f"\n\nAverage Movie Duration: {avgDuration:.2f} minutes"
 
         # The director who has directed the most movies
         stats += f"\n\nMpst Prolific Director: {directorWithMostMovies}"
@@ -521,18 +521,18 @@ class Recommender:
 #####################
 # TESTING:
 #####################
-# def main():
-#     recommender = Recommender()
-#     recommender.loadBooks()
-#     recommender.loadShows()
-#     recommender.loadAssociations()
-#     # print(recommender.getMovieList())
-#     # print(recommender.getTVList())
-#     # print(recommender.getBookList())
-#     # print(recommender.getBookStats())
-#     print(recommender.getRecommendations("Book", "Back to Wando Passo"))
-#
-# main()
+def main():
+    recommender = Recommender()
+    recommender.loadBooks()
+    recommender.loadShows()
+    recommender.loadAssociations()
+    # print(recommender.getMovieList())
+    # print(recommender.getTVList())
+    # print(recommender.getBookList())
+    print(recommender.getMovieStats())
+    # print(recommender.getRecommendations("Book", "Back to Wando Passo"))
+
+main()
 
 ####################
 #End Testing
