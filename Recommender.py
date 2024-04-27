@@ -417,7 +417,7 @@ class Recommender:
         # Return a string containing the Title, Director, Actors, and Genre (with those titles at the top) in neat, even columns, whose width is determined based on the length of the entries in the data
         data = f"{'Title':<{longestTitleLen}}  {'Director':<{longestDirectorLen}}  {'Actor':<{longestActorLen}}  {'Genre':<{longestGenreLen}}"
         for show in results:
-            data += f"\n{show.getTitle():<{longestTitleLen}}  {show.getDirectors():<{longestDirectorLen}}  {show.getActors():<{longestActorLen}}  {show.getGenres():<{longestGenreLen}}"
+            data += f"\n{show.getTitle():<{longestTitleLen or len('Title')}}  {show.getDirectors():<{longestDirectorLen or len('Director')}}  {show.getActors():<{longestActorLen or len('Actor')}}  {show.getGenres():<{longestGenreLen or len('Genre')}}"
 
         return data
 
@@ -530,7 +530,7 @@ def main():
     # print(recommender.getMovieList())
     # print(recommender.getTVList())
     # print(recommender.getBookList())
-    print(recommender.getMovieStats())
+    print(recommender.searchTVMovies("TV Show", "Swamp People", "", "", ""))
     # print(recommender.getRecommendations("Book", "Back to Wando Passo"))
 
 main()
