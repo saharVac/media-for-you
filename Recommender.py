@@ -414,10 +414,15 @@ class Recommender:
                     longestGenreLen = len(show.getGenres())
                 results.append(show)
 
+        titleColWidth = longestTitleLen if longestTitleLen > len('Title') else len('Title')
+        directorColWidth = longestDirectorLen if longestDirectorLen > len('Director') else len('Director')
+        actorColWidth = longestActorLen if longestActorLen > len('Actor') else len('Actor')
+        genreColWidth = longestGenreLen if longestGenreLen > len('Genre') else len('Genre')
+
         # Return a string containing the Title, Director, Actors, and Genre (with those titles at the top) in neat, even columns, whose width is determined based on the length of the entries in the data
-        data = f"{'Title':<{longestTitleLen}}  {'Director':<{longestDirectorLen}}  {'Actor':<{longestActorLen}}  {'Genre':<{longestGenreLen}}"
+        data = f"{'Title':<{titleColWidth}}  {'Director':<{directorColWidth}}  {'Actor':<{actorColWidth}}  {'Genre':<{genreColWidth}}"
         for show in results:
-            data += f"\n{show.getTitle():<{longestTitleLen or len('Title')}}  {show.getDirectors():<{longestDirectorLen or len('Director')}}  {show.getActors():<{longestActorLen or len('Actor')}}  {show.getGenres():<{longestGenreLen or len('Genre')}}"
+            data += f"\n{show.getTitle():<{titleColWidth}}  {show.getDirectors():<{directorColWidth}}  {show.getActors():<{actorColWidth}}  {show.getGenres():<{genreColWidth}}"
 
         return data
 
@@ -431,27 +436,31 @@ class Recommender:
         results = []
 
         longestTitleLen = 0
-        longestPublisherLen = 0
         longestAuthorLen = 0
+        longestPublisherLen = 0
 
         for id, book in self._books.items():
             # field by field, considering only non-empty fields, skipping books that don't match the non-empty fields
-            if (title and title != book.getTitle()) or (publisher and publisher != book.getPublisher()) or (author and author not in book.getAuthors().split("\\")):
+            if (title and title != book.getTitle()) or (author and author not in book.getAuthors().split("\\")) or (publisher and publisher != book.getPublisher()):
                 continue
 
             if len(book.getTitle()) > longestTitleLen:
                 longestTitleLen = len(book.getTitle())
-            if len(book.getPublisher()) > longestPublisherLen:
-                longestPublisherLen = len(book.getPublisher())
             if len(book.getAuthors()) > longestAuthorLen:
                 longestAuthorLen = len(book.getAuthors())
+            if len(book.getPublisher()) > longestPublisherLen:
+                longestPublisherLen = len(book.getPublisher())
 
             results.append(book)
 
+        titleColWidth = longestTitleLen if longestTitleLen > len('Title') else len('Title')
+        authorColWidth = longestAuthorLen if longestAuthorLen > len('Author') else len('Author')
+        publisherColWidth = longestPublisherLen if longestPublisherLen > len('Publisher') else len('Publisher')
+
         # Return a string containing the Title, Author, and Publisher (with those titles at the top) in neat, even columns, whose width is determined based on the length of the entries in the data
-        data = f"{'Title':<{longestTitleLen}}  {'Author':<{longestAuthorLen}}  {'Publisher':<{longestPublisherLen}}"
+        data = f"{'Title':<{titleColWidth}}  {'Author':<{authorColWidth}}  {'Publisher':<{publisherColWidth}}"
         for book in results:
-            data += f"\n{book.getTitle():<{longestTitleLen}}  {book.getAuthors():<{longestAuthorLen}}  {book.getPublisher():<{longestPublisherLen}}"
+            data += f"\n{book.getTitle():<{titleColWidth}}  {book.getAuthors():<{authorColWidth}}  {book.getPublisher():<{publisherColWidth}}"
 
         return data
 
