@@ -6,6 +6,7 @@ from Recommender import Recommender
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
@@ -267,7 +268,8 @@ class RecommenderGUI:
         self.__rating_tab = ttk.Frame(self.__notebook)
         self.__notebook.add(self.__rating_tab, text="Ratings")
 
-
+        self.__movie_ratings_label = tk.Label(self.__rating_tab, text="No shows data has been loaded yet")
+        self.__movie_ratings_label.pack(expand=True)
 
         # -----------  MAIN BUTTONS  -----------
         # Buttons below the notebook that will have appropriate names and will:
@@ -305,10 +307,11 @@ class RecommenderGUI:
         # Calls the appropriate function from the Recommender object to obtain the string representing the list of tv shows and the string representing the tv show statistics and displays them in the appropriate text area
     def loadShows(self):
         self.__recommender.loadShows()
+
         movie_list = self.__recommender.getMovieList()
-        movie_stats = self.__recommender.getMovieStats()
+        movie_stats, movieRatings = self.__recommender.getMovieStats()
         tvshow_list = self.__recommender.getTVList()
-        tvshow_stats = self.__recommender.getTVStats()
+        tvshow_stats, showRatings = self.__recommender.getTVStats()
 
         if movie_list:
             self.__movie_text1.configure(state=tk.NORMAL)
@@ -356,6 +359,35 @@ class RecommenderGUI:
             self.__tvshow_text2.insert(tk.END, "No statistics available")
             self.__tvshow_text2.configure(state=tk.DISABLED)
 
+        # --------- Bonus: chart populating --------- #
+        # emptying out Ratings tab Frame prior to adding charts
+        for widget in self.__rating_tab.winfo_children():
+            widget.destroy()
+
+        matplotlib.use('TkAgg')
+        plt.rcParams.update({'font.size': 7})
+
+        # creating and adding Movie Ratings chart
+        movieRatingLabels = list(movieRatings.keys())
+        movieRatingSizes = list(movieRatings.values())
+        movieRatingsChartFigure, movieCharAxes = plt.subplots(figsize=(8, 8))
+        movieCharAxes.pie(movieRatingSizes, labels=movieRatingLabels, autopct='%1.2f%%', startangle=90)
+        movieCharAxes.axis('equal')
+        movieCharAxes.set_title("Movie Ratings")
+        canvas_movie_ratings = FigureCanvasTkAgg(movieRatingsChartFigure, master=self.__rating_tab)
+        canvas_movie_ratings.draw()
+        canvas_movie_ratings.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        # creating and adding Shows Ratings chart
+        movieRatingLabels = list(showRatings.keys())
+        movieRatingSizes = list(showRatings.values())
+        showRatingsChartFigure, showCharAxes = plt.subplots(figsize=(8, 8))
+        showCharAxes.pie(movieRatingSizes, labels=movieRatingLabels, autopct='%1.2f%%', startangle=90)
+        showCharAxes.axis('equal')
+        showCharAxes.set_title("TV Show Ratings")
+        canvas_show_ratings = FigureCanvasTkAgg(showRatingsChartFigure, master=self.__rating_tab)
+        canvas_show_ratings.draw()
+        canvas_show_ratings.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
     # A loadBooks() function that takes in no parameters, returns nothing, and:
 

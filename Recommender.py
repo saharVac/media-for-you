@@ -247,8 +247,10 @@ class Recommender:
 
         # Rating for movies (G, PG, R, etc...) and the number of times a particular rating appears as a percentage of all of the ratings for movies, with two decimals of precision
         stats = "Ratings:"
+        ratingPercentages = {}
         for rating, amount in ratingToMovieAmounts.items():
-            stats += f"\n{rating} {amount / totalMovies:.2%}"
+            ratingPercentages[rating] = f"{(amount / totalMovies):.2f}"
+            stats += f"\n{rating} {(amount / totalMovies):.2%}"
 
         # Average movie duration in minutes, with two decimals of precision
         avgDuration = totalDurations / totalMovies
@@ -263,7 +265,7 @@ class Recommender:
         # The most frequent movie genre
         stats += f"\n\nMost Frequent Genre: {genreWithMostMovies}"
 
-        return stats
+        return stats, ratingPercentages
 
     # A function named getTVStats(), that takes in no additional parameters, and returns the statistics regarding tv shows, such as:
     def getTVStats(self):
@@ -320,8 +322,10 @@ class Recommender:
                         ratingToShowAmounts[rating] += 1
 
         # Rating for tv shows (G, PG, R, etc...) and the number of times a particular rating appears as a percentage of all of the ratings for tv shows, with two decimals of precision
+        ratingPercentages = {}
         stats = "Ratings:"
         for rating, amount in ratingToShowAmounts.items():
+            ratingPercentages[rating] = f"{(amount / totalShows):.2f}"
             stats += f"\n{rating} {amount / totalShows:.2%}"
 
         # Average number of seasons for tv shows, with two decimals of precision
@@ -334,7 +338,7 @@ class Recommender:
         # The most frequent tv show genre
         stats += f"\n\nMost Frequent Genre: {genreWithMostShows}"
 
-        return stats
+        return stats, ratingPercentages
 
     # A function named getBookStats(), that takes in no additional parameters, and returns the statistics regarding books, such as:
     def getBookStats(self):
