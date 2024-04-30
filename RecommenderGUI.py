@@ -6,6 +6,9 @@ from Recommender import Recommender
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 class RecommenderGUI:
 
     # A constructor function that takes in no parameters
@@ -22,6 +25,7 @@ class RecommenderGUI:
         # notebook tab
         self.__notebook = ttk.Notebook(self.__main_window)
         self.__notebook.pack(expand=1, fill=tk.BOTH)
+
 
         # -----------  MOVIES TAB  -----------
         # Contains a notebook tab to display all of the movie titles and runtimes, as well as the movie statistics
@@ -51,6 +55,7 @@ class RecommenderGUI:
         self.__movie_text1.configure(state=tk.DISABLED)
         self.__movie_text2.configure(state=tk.DISABLED)
 
+
         # -----------  TV SHOW TAB  -----------
         # Contains a notebook tab to display all of the tv show titles and seasons, as well as the tv show statistics
         self.__tvshow_tab = ttk.Frame(self.__notebook)
@@ -75,6 +80,7 @@ class RecommenderGUI:
         # The user should not be able to alter the data in the text areas
         self.__tvshow_text1.configure(state=tk.DISABLED)
         self.__tvshow_text2.configure(state=tk.DISABLED)
+
 
         # -----------  BOOKS TAB  -----------
         # Contains a notebook tab to display all of the book titles and authors, as well as the book statistics
@@ -103,6 +109,7 @@ class RecommenderGUI:
         # The user should not be able to alter the data in the text areas
         self.__book_text1.configure(state=tk.DISABLED)
         self.__book_text2.configure(state=tk.DISABLED)
+
 
         # -----------  SEARCH MOVIES/TV SHOW TAB  -----------
         # Contains a notebook tab to allow the user to search through the movies and tv shows and should contain
@@ -145,7 +152,6 @@ class RecommenderGUI:
         self.__genre_label.pack()
         self.__genre_field.pack()
 
-
         # A Button to trigger the search, which calls the appropriate function from the Recommender object
 
         self.__mtv_search_button = tk.Button(self.__search_mov_tv_tab, text="Search", command=self.searchShows)
@@ -165,6 +171,7 @@ class RecommenderGUI:
 
         # The user should not be able to alter the data in the text area
         self.__search_mov_tv_text.configure(state=tk.DISABLED)
+
 
         # -----------  SEARCH BOOKS TAB  -----------
         # Contains a notebook tab to allow the user to search through the books and should contain
@@ -211,6 +218,7 @@ class RecommenderGUI:
         # The user should not be able to alter the data in the text area
         self.__book_search_text.configure(state=tk.DISABLED)
 
+
         # -----------  RECOMMENDATION TAB  -----------
         # Contains a notebook tab to allow the user to obtain media recommendations and should contain
         self.__recommendation_tab = ttk.Frame(self.__notebook)
@@ -249,6 +257,17 @@ class RecommenderGUI:
 
         # The user should not be able to alter the data in the text area
         self.__rec_text.config(state=tk.DISABLED)
+
+
+        # -----------  Bonus Ratings TAB  -----------
+        # tab called Ratings that will store two matplotlib pie charts. One pie chart will show each percentage of
+        # ratings (G, PG, R, etc...) for movies, and the other pie charts will show the percentage of ratings for tv
+        # shows. Be sure to include the label (G, PG, R, etc) and percentage value (with two decimals of precision) for
+        # each slice of the pie chart. Note you will need to use a tkinter Canvas widget to display the pie charts.
+        self.__rating_tab = ttk.Frame(self.__notebook)
+        self.__notebook.add(self.__rating_tab, text="Ratings")
+
+
 
         # -----------  MAIN BUTTONS  -----------
         # Buttons below the notebook that will have appropriate names and will:
@@ -338,8 +357,6 @@ class RecommenderGUI:
             self.__tvshow_text2.configure(state=tk.DISABLED)
 
 
-
-
     # A loadBooks() function that takes in no parameters, returns nothing, and:
 
     def loadBooks(self):
@@ -372,11 +389,11 @@ class RecommenderGUI:
             self.__book_text2.configure(state=tk.DISABLED)
 
 
-
     # A loadAssociations() function that takes in no parameters, returns nothing, and:
     def loadAssociations(self):
         # Calls the appropriate function from the Recommender object to read in all of the data for the associations
         self.__recommender.loadAssociations()
+
 
     # A creditInfoBox() function that takes in no parameters, returns nothing, and:
     def creditInfoBox(self):
@@ -384,6 +401,7 @@ class RecommenderGUI:
         # Spawns a showinfo messagebox containing the names of each of your group members and what day the project was completed on
         message = "Author: Sahar and Samradnyee\nDate created: 4/23/24"
         messagebox.showinfo("Information", message)
+
 
     # A searchShows() function that takes in no parameters, returns nothing, and:
     def searchShows(self):
@@ -404,6 +422,7 @@ class RecommenderGUI:
             self.__search_mov_tv_text.insert(tk.END, search_data)
             self.__search_mov_tv_text.configure(state=tk.DISABLED)
 
+
     # A searchBooks() function that takes in no parameters, returns nothing, and:
     def searchBooks(self):
         # Extracts all of the data from the appropriate Entry widgets to search for a book
@@ -420,7 +439,6 @@ class RecommenderGUI:
             self.__book_search_text.insert(tk.END, search_books_data)
             self.__book_search_text.configure(state=tk.DISABLED)
 
-        
 
     # A getRecommendations() function that takes in no parameters, returns nothing, and:
     def getRecommendation(self):
@@ -438,9 +456,7 @@ class RecommenderGUI:
             self.__rec_text.configure(state=tk.DISABLED)
 
 
-
 def main():
     RecommenderGUI()
-
 
 main()

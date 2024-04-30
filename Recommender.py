@@ -239,10 +239,11 @@ class Recommender:
                             genreWithMostMovies = genre
 
                 rating = show.getRating()
-                if rating not in ratingToMovieAmounts:
-                    ratingToMovieAmounts[rating] = 1
-                else:
-                    ratingToMovieAmounts[rating] += 1
+                if rating:
+                    if rating not in ratingToMovieAmounts:
+                        ratingToMovieAmounts[rating] = 1
+                    else:
+                        ratingToMovieAmounts[rating] += 1
 
         # Rating for movies (G, PG, R, etc...) and the number of times a particular rating appears as a percentage of all of the ratings for movies, with two decimals of precision
         stats = "Ratings:"
@@ -532,22 +533,3 @@ class Recommender:
 
                     """
                 return results
-#####################
-# TESTING:
-#####################
-# def main():
-#     recommender = Recommender()
-#     recommender.loadBooks()
-#     recommender.loadShows()
-#     recommender.loadAssociations()
-#     # print(recommender.getMovieList())
-#     # print(recommender.getTVList())
-#     # print(recommender.getBookList())
-#     print(recommender.searchTVMovies("TV Show", "Swamp People", "", "", ""))
-#     # print(recommender.getRecommendations("Book", "Back to Wando Passo"))
-#
-# main()
-
-####################
-#End Testing
-####################
