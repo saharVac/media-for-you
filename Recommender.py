@@ -279,6 +279,7 @@ class Recommender:
 
         for id, show in self._shows.items():
             if show.getType() == "TV Show":
+
                 seasons = int(show.getDuration().split(" ")[0])
                 totalSeasons += seasons
                 totalShows += 1
@@ -310,10 +311,12 @@ class Recommender:
                             genreWithMostShows = genre
 
                 rating = show.getRating()
-                if rating not in ratingToShowAmounts:
-                    ratingToShowAmounts[rating] = 1
-                else:
-                    ratingToShowAmounts[rating] += 1
+                # accounting for null value verification
+                if rating:
+                    if rating not in ratingToShowAmounts:
+                        ratingToShowAmounts[rating] = 1
+                    else:
+                        ratingToShowAmounts[rating] += 1
 
         # Rating for tv shows (G, PG, R, etc...) and the number of times a particular rating appears as a percentage of all of the ratings for tv shows, with two decimals of precision
         stats = "Ratings:"
