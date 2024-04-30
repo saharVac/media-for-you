@@ -200,16 +200,17 @@ class Recommender:
 
                 directors = show.getDirectors().split("\\")
                 for director in directors:
-                    if director not in directorsToMovieAmounts:
-                        # if directorsToMovieAmounts is empty, this first director found should be declared as one with most movies for now
-                        if not directorsToMovieAmounts:
-                            directorWithMostMovies = director
-                        directorsToMovieAmounts[director] = 1
-                    else:
-                        directorsToMovieAmounts[director] += 1
-                        # check if director now has highest amount
-                        if directorsToMovieAmounts[director] > directorsToMovieAmounts[directorWithMostMovies]:
-                            directorWithMostMovies = director
+                    if director:
+                        if director not in directorsToMovieAmounts:
+                            # if directorsToMovieAmounts is empty, this first director found should be declared as one with most movies for now
+                            if not directorsToMovieAmounts:
+                                directorWithMostMovies = director
+                            directorsToMovieAmounts[director] = 1
+                        else:
+                            directorsToMovieAmounts[director] += 1
+                            # check if director now has highest amount
+                            if directorsToMovieAmounts[director] > directorsToMovieAmounts[directorWithMostMovies]:
+                                directorWithMostMovies = director
 
                 actors = show.getActors().split("\\")
                 for actor in actors:
