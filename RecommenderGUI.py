@@ -39,14 +39,15 @@ class RecommenderGUI:
         self.__movie_text1 = tk.Text(self.__movie_tab, wrap="word")
         self.__movie_text2 = tk.Text(self.__movie_tab, wrap="word")
 
-
-        self.__movie_text1.pack(expand=1, fill=tk.BOTH)
-        self.__movie_text2.pack(expand=1, fill=tk.BOTH)
-
         # The user should be able to scroll through the title and runtimes
         self.__scrollbar = tk.Scrollbar(self.__movie_tab, command=self.__movie_text1.yview)
-        self.__scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.__movie_text1.config(yscrollcommand=self.__scrollbar.set)
+
+        # Packing text widget and scrollbar
+        self.__movie_text2.pack(side=tk.BOTTOM, expand=1, fill=tk.BOTH)
+        self.__scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.__movie_text1.pack(expand=1, fill=tk.BOTH)
+
 
         # If no data has been loaded yet, both text areas should display default text informing the user that no data has been loaded yet
         self.__movie_text1.insert(tk.END, "No data has been loaded yet")
@@ -66,13 +67,17 @@ class RecommenderGUI:
         self.__tvshow_text1 = tk.Text(self.__tvshow_tab, wrap="word")
         self.__tvshow_text2 = tk.Text(self.__tvshow_tab, wrap="word")
 
-        self.__tvshow_text1.pack(expand=1, fill=tk.BOTH)
-        self.__tvshow_text2.pack(expand=1, fill=tk.BOTH)
-
         # The user should be able to scroll through the title and seasons
         self.__scrollbar_text = tk.Scrollbar(self.__tvshow_tab, command=self.__tvshow_text1.yview)
-        self.__scrollbar_text.pack(side=tk.RIGHT, fill=tk.Y)
+
         self.__tvshow_text1.config(yscrollcommand=self.__scrollbar_text.set)
+
+        # Packing text widget and scrollbar
+        self.__tvshow_text2.pack(side=tk.BOTTOM, expand=1, fill=tk.BOTH)
+        self.__scrollbar_text.pack(side=tk.RIGHT, fill=tk.Y)
+        self.__tvshow_text1.pack(expand=1, fill=tk.BOTH)
+
+
 
         # If no data has been loaded yet, both text areas should display default text informing the user that no data has been loaded yet
         self.__tvshow_text1.insert(tk.END, "No data has been loaded yet")
@@ -95,13 +100,14 @@ class RecommenderGUI:
         self.__book_text1 = tk.Text(self.__book_tab, wrap="word")
         self.__book_text2 = tk.Text(self.__book_tab, wrap="word")
 
-        self.__book_text1.pack(expand=1, fill=tk.BOTH)
-        self.__book_text2.pack(expand=1, fill=tk.BOTH)
-
         # The user should be able to scroll through the title and authors
         self.__scrollbar = tk.Scrollbar(self.__book_tab, command=self.__book_text1.yview)
-        self.__scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.__book_text1.config(yscrollcommand=self.__scrollbar.set)
+
+        # packing text widget and scrollbar
+        self.__book_text2.pack(side=tk.BOTTOM, expand=1, fill=tk.BOTH)
+        self.__scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.__book_text1.pack(expand=1, fill=tk.BOTH)
 
         # If no data has been loaded yet, both text areas should display default text informing the user that no data has been loaded yet
         self.__book_text1.insert(tk.END, "No data has been loaded yet")
@@ -160,15 +166,18 @@ class RecommenderGUI:
 
         # stores the results in the text area
         self.__search_mov_tv_text = tk.Text(self.__search_mov_tv_tab)
-        self.__search_mov_tv_text.pack(expand=1, fill=tk.BOTH)
+        # self.__search_mov_tv_text.pack(expand=1, fill=tk.BOTH)
 
         # If no searches have been performed yet, the text areas should display some default text to inform the user they need to enter data to perform a search
         self.__search_mov_tv_text.insert(tk.END, "Please enter data to perform the search")
 
         # The user should be able to scroll through the results
         self.__scrollbar_search_mtv = tk.Scrollbar(self.__search_mov_tv_tab, command=self.__search_mov_tv_text.yview)
-        self.__scrollbar_search_mtv.pack(side=tk.RIGHT, fill=tk.Y)
         self.__search_mov_tv_text.config(yscrollcommand=self.__scrollbar_search_mtv.set)
+
+        # packing text widget and scrollbar
+        self.__scrollbar_search_mtv.pack(side=tk.RIGHT, fill=tk.Y)
+        self.__search_mov_tv_text.pack(expand=1, fill=tk.BOTH)
 
         # The user should not be able to alter the data in the text area
         self.__search_mov_tv_text.configure(state=tk.DISABLED)
@@ -206,15 +215,18 @@ class RecommenderGUI:
         self.__book_search_button.pack()
 
         self.__book_search_text = tk.Text(self.__search_book_tab)
-        self.__book_search_text.pack(expand=1, fill=tk.BOTH)
         
         # If no searches have been performed yet, the text areas should display some default text to inform the user they need to enter data to perform a search
         self.__book_search_text.insert(tk.END, "Please enter data to perform the search")
         
         # The user should be able to scroll through the results
         self.__scrollbar_search_book = tk.Scrollbar(self.__search_book_tab, command=self.__book_search_text.yview)
-        self.__scrollbar_search_book.pack(side=tk.RIGHT, fill=tk.Y)
         self.__book_search_text.config(yscrollcommand=self.__scrollbar_search_book.set)
+
+        # packing text widget and scrollbar
+        self.__scrollbar_search_book.pack(side=tk.RIGHT, fill=tk.Y)
+        self.__book_search_text.pack(expand=1, fill=tk.BOTH)
+
 
         # The user should not be able to alter the data in the text area
         self.__book_search_text.configure(state=tk.DISABLED)
@@ -246,15 +258,18 @@ class RecommenderGUI:
 
         # stores the results in the text area
         self.__rec_text = tk.Text(self.__recommendation_tab)
-        self.__rec_text.pack(expand=1, fill=tk.BOTH)
 
         # If no searches have been performed yet, the text areas should display some default text to inform the user they need to enter a title to receive a recommendation
         self.__rec_text.insert(tk.END, "Please enter data to perform the search")
 
         # The user should be able to scroll through the results
         self.__scrollbar_rec_text = tk.Scrollbar(self.__recommendation_tab, command=self.__rec_text.yview)
-        self.__scrollbar_rec_text.pack(side=tk.RIGHT, fill=tk.Y)
         self.__rec_text.config(yscrollcommand=self.__scrollbar_rec_text.set)
+
+        # packing text widget and scrollbar
+        self.__scrollbar_rec_text.pack(side=tk.RIGHT, fill=tk.Y)
+        self.__rec_text.pack(expand=1, fill=tk.BOTH)
+
 
         # The user should not be able to alter the data in the text area
         self.__rec_text.config(state=tk.DISABLED)
@@ -370,10 +385,12 @@ class RecommenderGUI:
         # creating and adding Movie Ratings chart
         movieRatingLabels = list(movieRatings.keys())
         movieRatingSizes = list(movieRatings.values())
-        movieRatingsChartFigure, movieCharAxes = plt.subplots(figsize=(8, 8))
+        movieRatingsChartFigure, movieCharAxes = plt.subplots(figsize=(4, 4))
         movieCharAxes.pie(movieRatingSizes, labels=movieRatingLabels, autopct='%1.2f%%', startangle=90)
+
         movieCharAxes.axis('equal')
         movieCharAxes.set_title("Movie Ratings")
+
         canvas_movie_ratings = FigureCanvasTkAgg(movieRatingsChartFigure, master=self.__rating_tab)
         canvas_movie_ratings.draw()
         canvas_movie_ratings.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
@@ -381,7 +398,7 @@ class RecommenderGUI:
         # creating and adding Shows Ratings chart
         movieRatingLabels = list(showRatings.keys())
         movieRatingSizes = list(showRatings.values())
-        showRatingsChartFigure, showCharAxes = plt.subplots(figsize=(8, 8))
+        showRatingsChartFigure, showCharAxes = plt.subplots(figsize=(4, 4))
         showCharAxes.pie(movieRatingSizes, labels=movieRatingLabels, autopct='%1.2f%%', startangle=90)
         showCharAxes.axis('equal')
         showCharAxes.set_title("TV Show Ratings")
