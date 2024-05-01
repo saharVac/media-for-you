@@ -9,6 +9,8 @@ from tkinter import messagebox
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import random
+import math
 
 class RecommenderGUI:
 
@@ -386,11 +388,32 @@ class RecommenderGUI:
         movieRatingLabels = list(movieRatings.keys())
         movieRatingSizes = list(movieRatings.values())
         movieRatingsChartFigure, movieCharAxes = plt.subplots(figsize=(4, 4))
-        movieCharAxes.pie(movieRatingSizes, labels=movieRatingLabels, autopct='%1.2f%%', startangle=90)
-
+        movie_wedges, _, movie_labels = movieCharAxes.pie(movieRatingSizes, labels=movieRatingLabels, autopct='%1.2f%%',
+                                                          startangle=90)
         movieCharAxes.axis('equal')
         movieCharAxes.set_title("Movie Ratings")
 
+        # Adjusting the position of each label
+        for label, wedge in zip(movie_labels, movie_wedges):
+            # Calculate the angle of the wedge's midpoint
+            angle = (wedge.theta2 + wedge.theta1) / 2.0
+            # Calculate the radius of the wedge
+            radius = 0.7 * wedge.r
+            # Calculate the x and y coordinates for label position
+            x = radius * math.cos(math.radians(angle))
+            y = radius * math.sin(math.radians(angle))
+            # Set label position, vertical and horizontal alignment
+            label.set_position((x, y))
+            label.set_va('center')
+            label.set_ha('center')
+            # Adjust rotation angle for labels on the left side of the pie chart
+            if angle > 90 and angle < 270:
+                angle -= 180
+            label.set_rotation(angle)
+            # Set label background properties
+            label.set_bbox(dict(facecolor='white', alpha=0.5, edgecolor='none'))
+
+        # Draw the canvas
         canvas_movie_ratings = FigureCanvasTkAgg(movieRatingsChartFigure, master=self.__rating_tab)
         canvas_movie_ratings.draw()
         canvas_movie_ratings.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
@@ -399,15 +422,38 @@ class RecommenderGUI:
         movieRatingLabels = list(showRatings.keys())
         movieRatingSizes = list(showRatings.values())
         showRatingsChartFigure, showCharAxes = plt.subplots(figsize=(4, 4))
-        showCharAxes.pie(movieRatingSizes, labels=movieRatingLabels, autopct='%1.2f%%', startangle=90)
+        tvshow_wedges, _, tvshow_labels = showCharAxes.pie(movieRatingSizes, labels=movieRatingLabels, autopct='%1.2f%%',
+                                                         startangle=90)
         showCharAxes.axis('equal')
         showCharAxes.set_title("TV Show Ratings")
+
+        # Adjusting the position of each label
+        for label, wedge in zip(tvshow_labels, tvshow_wedges):
+            # Calculate the angle of the wedge's midpoint
+            angle = (wedge.theta2 + wedge.theta1) / 2.0
+            # Calculate the radius of the wedge
+            radius = 0.7 * wedge.r
+            # Calculate the x and y coordinates for label position
+            x = radius * math.cos(math.radians(angle))
+            y = radius * math.sin(math.radians(angle))
+            # Set label position, vertical and horizontal alignment
+            label.set_position((x, y))
+            label.set_va('center')
+            label.set_ha('center')
+            # Adjust rotation angle for labels on the left side of the pie chart
+            if angle > 90 and angle < 270:
+                angle -= 180
+            label.set_rotation(angle)
+            # Set label background properties
+            label.set_bbox(dict(facecolor='white', alpha=0.5, edgecolor='none'))
+
+        # Draw the canvas
         canvas_show_ratings = FigureCanvasTkAgg(showRatingsChartFigure, master=self.__rating_tab)
         canvas_show_ratings.draw()
         canvas_show_ratings.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-    # A loadBooks() function that takes in no parameters, returns nothing, and:
 
+    # A loadBooks() function that takes in no parameters, returns nothing, and:
     def loadBooks(self):
         # Calls the appropriate function from the Recommender object to read in all of the data for the books
         self.__recommender.loadBooks()
